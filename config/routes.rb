@@ -1,10 +1,25 @@
 Rails.application.routes.draw do
 
-  resources :users, only: [:index,:show]
+  use_doorkeeper
+  resources :users, except: :destroy
   
   namespace :api do
      resources :users
+     resources :credentials do
+       collection do
+         get :me  
+       end
+     end 
   end
+
+  get "log_in" => "sessions#new", :as => "log_in"
+  get "log_out" => "sessions#destroy", :as => "log_out"
+  get "sign_up" => "users#new", :as => "sign_up"
+  root :to => "users#new"
+
+  resources :sessions
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
