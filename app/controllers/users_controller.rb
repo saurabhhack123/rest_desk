@@ -21,6 +21,17 @@ class UsersController < ApplicationController
       render :new
     end
   end
+  
+  def confirm
+    @user = User.where(id: params[:id], verification_token: params[:token]).first
+    
+    if @user
+      @user.confirm!
+      redirect_to root_path
+    else
+      redirect_to root_path, flash: {error: 'your token was invalid'}
+    end
+  end
 
   private
   

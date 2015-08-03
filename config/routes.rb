@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 
   use_doorkeeper
-  resources :users, except: :destroy
+  resources :users, except: :destroy do
+    post :confirm
+  end
   
   namespace :api do
      resources :users
